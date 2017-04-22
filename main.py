@@ -5,3 +5,6 @@
 # is solving has a certain amount of time to solve a puzzle
 # to get the correct name of a constellation.
 ############################
+from Tkinter import *
+# import RPi.GPIO as GPIO
+import codecs
