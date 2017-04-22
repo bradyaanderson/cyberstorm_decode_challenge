@@ -40,3 +40,5 @@ while not solved:
 
 	if decode_value == encode_value:
 		not_solved = True
+# code for Tkinter window (canvas class)
+# it would show the current value or whatever
