@@ -1,0 +1,32 @@
+# telescopes
+# use Pi camera to find a clue
+# final objective: get camera to look at something
+# or, get a servo, something to rotate the camera.
+# program it to rotate and look around
+
+# IDEAS: ########
+# find coordinates for camera to be located
+# extract coordinates??
+# pretend to have graphical interface?
+
+# use pi to control Arduino, possibly?
+# introduce some kind of conflict, such as:
+# hide root access. First person to find it can lock the others out.
+
+# there's a command to type in
+# run python script to get live video
+# notes around the place - they're all a puzzle
+# gotta see them all                                                    # send nudes
+
+# it could be a MARS ROVER
+# that way I could use Arduino or something
+# basically, the camera is on a moving rover (robot)
+# and each team is trying to take control of it
+# in order to find clues with the camera
+# inside an enclosed space.
+# that way, you have to rely on the camera to get around.
+# or, each team has a rover that they're moving about.
+# either way, teams can attack the other rovers and disable them
+# as they try to find clues inside the dome.
+# and the clues are all on pages or something.
+# or, they're trying to deliver payload or spot constellations.
