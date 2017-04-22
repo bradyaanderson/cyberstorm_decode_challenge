@@ -19,13 +19,12 @@ def decode(string, code):
 
 # the answer will be equal to some string value
 def get_answer():
-	return "some string"
-
+	return "some string", "some code value"
 
 
 # main
 solved = False
-answer = get_answer()
+answer, code = get_answer()
 code = "some random value"
 
 # encodes the message as some value
