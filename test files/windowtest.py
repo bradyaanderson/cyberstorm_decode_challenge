@@ -4,33 +4,6 @@
 # This is a test for the GUI for Constellation Crack.
 ###########################################################
 from Tkinter import *
-#
-# class Window(Frame):
-#     def __init__(self, master):
-#         self.master = master
-#
-#         self.l1 = Label(master, text="hello")
-#         self.l1.pack()
-#
-#
-# # the default size of the GUI is 800x600
-# WIDTH = 1280
-# HEIGHT = 720
-#
-# # create the window
-# window = Tk()
-# window.title("Constellation Crack")
-#
-# # sets window size, may want to make not resizable later
-# window.geometry('{}x{}'.format(WIDTH, HEIGHT))
-#
-#
-#
-# # wait for the window to close
-# window.mainloop()
-
-
-from Tkinter import *
 
 class Window:
     def __init__(self, master):
@@ -45,8 +18,8 @@ class Window:
         self.widget_h = int(HEIGHT/27)
 
         self.set_up_code_box(0, 0)
-        self.set_up_timer_box(0, 1)
-        self.set_up_image_box(1, 0)
+        self.set_up_timer_box(1, 0)
+        self.set_up_image_box(0, 1)
         self.set_up_hints_box(1, 1)
 
     # set up code box

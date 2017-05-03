@@ -5,7 +5,7 @@ from datetime import timedelta
 start_time = time.time()
 
 # total time of timer in seconds
-total_time = 5
+total_time = 300
 
 time_left = True
 
