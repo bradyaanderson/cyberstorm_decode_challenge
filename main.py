@@ -78,8 +78,8 @@ class Timer(object):
     def get_time_left(self):
         current_time_left = self.total_time - time() + self.start_time
         if current_time_left > 0:
-            return str(timedelta(seconds=current_time_left+1))[3:7]
-        return '0:00'
+            return str(timedelta(seconds=current_time_left+1))[3:7], current_time_left
+        return '0:00', 0
 
 
 # creates main challenge object
@@ -88,7 +88,7 @@ class Challenge(Cipher):
         # game variables
         self.game_over = False
         self.game_win = False
-        self.message = "123456789012345"
+        self.message = "You Win!!!"
         #modifies message to criteria
         self.encode_code = self.modify_code("A")
         # encypts message
@@ -122,6 +122,8 @@ class Challenge(Cipher):
                         37:     "Y",
                         40:     "Z"
         }
+
+        self.constellations = {constellation: []}
 
         self.pins = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36,37, 38, 40]
         # set up GPIO
@@ -181,14 +183,54 @@ class App(Challenge, Timer):
 
     # updates the gui timer
     def update_timer(self):
-        self.timer.configure(text=self.get_time_left())
-        self.root.after(100, self.update_timer)
+        time_left_string , self.time_left = self.get_time_left()
+        self.timer.configure(text=time_left_string)
+        
+        # if game is not over or won, keep updating gui   
+        if not self.game_over and not self.game_win:
+            self.root.after(100, self.update_timer)
 
     # updates all components of gui related to challenge
     def update_challenge(self):
         decode_string = self.get_decrypt()
         self.code.configure(text=decode_string)
-        self.root.after(10, self.update_challenge)
+        hint_text = self.show_hints(self.time_left)
+
+        self.hints.configure(text=hint_text)
+
+        # if message is decoded correctly set game_win to true
+        if decode_string == self.message:
+            self.game_win = True
+
+        # if time left is 0, set game_over to true
+        if self.time_left == 0:
+            self.game_over = True
+
+        # if game is not over or won, keep updating gui    
+        if not self.game_over and not self.game_win:
+            self.root.after(10, self.update_challenge)
+
+    def show_hints(self, time_left):
+        # percent of total time left
+        p_time_left = time_left / float(self.total_time)
+        if p_time_left < .1:
+            return 'English name'
+        elif p_time_left < .2:
+            return "Hurry there's not much \ntime left!"
+        elif p_time_left < .3:
+            return 'This is where the image will change'
+        elif p_time_left < .4:
+            return 'Another hint relating to constellation'
+        elif p_time_left < .5:
+            return 'Really nice weather we are having \ntoday'
+        elif p_time_left < .6:
+            return 'hint relaing to constellation'
+        elif p_time_left < .7:
+            return 'Word Length'
+        elif p_time_left < .8:
+            return 'Hint relating to constellation'
+        elif p_time_left < .9:
+            return 'Time has passed'
 
 
     # sets up GUI for application
