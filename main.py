@@ -248,6 +248,9 @@ class App(Challenge, Timer):
         elif p_time_left < .2:
             return "Hurry there's not much \ntime left!" # tells to hurry
         elif p_time_left < .3:
+            photo = PhotoImage(file="images/" + self.chosen_constellation + ".gif")
+            self.image.configure(image=photo)
+            self.image.image = photo
             return 'No hint here' # image will change here
         elif p_time_left < .4:
             return self.constellations[self.chosen_constellation][2] # shows 3rd hint relating to constellation
@@ -285,7 +288,7 @@ class App(Challenge, Timer):
 
     # set up image box
     def set_up_image_box(self, r, c):
-        photo = PhotoImage(file="test.gif")
+        photo = PhotoImage(file="images/test.gif")
         self.image = Label(self.root, image=photo, width=640, height=360, bg="black")
         self.image.image = photo
         self.image.grid(row=r, column=c)
