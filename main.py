@@ -9,7 +9,10 @@ import RPi.GPIO as GPIO
 from Tkinter import *
 from time import time, sleep
 from datetime import timedelta
+from random import randint
 
+GPIO.setwarnings(False)
+DEBUG = 2
 
 # holds all functions related to cipher
 class Cipher():
@@ -89,10 +92,8 @@ class Challenge(Cipher):
         self.game_over = False
         self.game_win = False
         self.message = "You Win!!!"
-        #modifies message to criteria
-        self.encode_code = self.modify_code("A")
-        # encypts message
-        self.encoded_list = self.encode(self.message, self.encode_code)
+            
+
         # gpio with corresponding letter
         self.letters = {
                         3:      "A",
@@ -123,9 +124,32 @@ class Challenge(Cipher):
                         40:     "Z"
         }
 
-        self.constellations = {constellation: []}
+        self.constellations = {
+                               'Scorpius': ['Obscure Hint','Word Length','More Specific Hint','English Name'],
+                               'Draco': ['','','',''],
+                               'Hydra': ['','','',''],
+                               'Pisces': ['','','',''],
+                               'Aries': ['','','',''],
+                               'Crater': ['','','',''],
+                               'Taurus': ['','','',''],
+                               'Lyra': ['','','','']
+                               }
+        # randomly choosey a constellation.  This will be the secret code for the game
+        self.chosen_constellation = self.constellations.keys()[randint(0,len(self.constellations) - 1)]
 
-        self.pins = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36,37, 38, 40]
+        if DEBUG >= 1:
+            print self.chosen_constellation
+
+        # modifies code to criteria, this is the secret code that needs to be cracked
+        self.encode_code = self.modify_code(self.chosen_constellation)
+
+        # if level 2 debug, secret code is set to A
+        if DEBUG >= 2:
+            self.encode_code = self.modify_code("A")
+
+            # encypts message
+        self.encoded_list = self.encode(self.message, self.encode_code)
+
         # set up GPIO
         self.setup_gpio()
 
@@ -133,7 +157,7 @@ class Challenge(Cipher):
     def setup_gpio(self):
         GPIO.setmode(GPIO.BOARD)
         for pin in self.letters.keys():
-            GPIO.setup(self.pins, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.letters.keys(), GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # returns a list of letters for each grounded pin
     def get_pins(self):
@@ -163,7 +187,7 @@ class App(Challenge, Timer):
     def __init__(self):
         # set up challenge and tieme
         Challenge.__init__(self)
-        Timer.__init__(self, 300)
+        Timer.__init__(self, 10)
         
         # set up gui components
         self.WIDTH = 1280
@@ -180,6 +204,9 @@ class App(Challenge, Timer):
 
         # Tkinter mainloop
         self.root.mainloop()
+
+        # clean GPIO after window closes
+        GPIO.cleanup()
 
     # updates the gui timer
     def update_timer(self):
@@ -204,6 +231,7 @@ class App(Challenge, Timer):
 
         # if time left is 0, set game_over to true
         if self.time_left == 0:
+            self.hints.configure(text="YOU LOSE")
             self.game_over = True
 
         # if game is not over or won, keep updating gui    
@@ -213,24 +241,26 @@ class App(Challenge, Timer):
     def show_hints(self, time_left):
         # percent of total time left
         p_time_left = time_left / float(self.total_time)
+
+        # a new hint will show every time 10% of time is up
         if p_time_left < .1:
-            return 'English name'
+            return self.constellations[self.chosen_constellation][3] # shows 4th hint (english name)
         elif p_time_left < .2:
-            return "Hurry there's not much \ntime left!"
+            return "Hurry there's not much \ntime left!" # tells to hurry
         elif p_time_left < .3:
-            return 'This is where the image will change'
+            return 'No hint here' # image will change here
         elif p_time_left < .4:
-            return 'Another hint relating to constellation'
+            return self.constellations[self.chosen_constellation][2] # shows 3rd hint relating to constellation
         elif p_time_left < .5:
-            return 'Really nice weather we are having \ntoday'
+            return "Don't worry about repeating letters" # informs that repeat letters are not significant
         elif p_time_left < .6:
-            return 'hint relaing to constellation'
+            return self.constellations[self.chosen_constellation][1] # shows 2nd hint (work length / repeat)
         elif p_time_left < .7:
-            return 'Word Length'
+            return 'Really nice weather we are having \ntoday' # joke
         elif p_time_left < .8:
-            return 'Hint relating to constellation'
+            return self.constellations[self.chosen_constellation][0] # shows 1st hint
         elif p_time_left < .9:
-            return 'Time has passed'
+            return 'There are 26 letters in\nthe alphabet' # show significance of GPIO to letters
 
 
     # sets up GUI for application
@@ -262,14 +292,10 @@ class App(Challenge, Timer):
 
     # set up hints box
     def set_up_hints_box(self, r, c):
-        self.hints = Label(self.root, text="This is where the hints will be\n I think", bg="black", fg="white", width=int(self.widget_w * (2.5)), height=int(self.widget_h * (2.6)), font=("Courier", 20))
+        self.hints = Label(self.root, text="This is where the hints will be\n I think...", bg="black", fg="white", width=int(self.widget_w * (2.5)), height=int(self.widget_h * (2.6)), font=("Courier", 20))
         self.hints.grid(row=r, column=c)
 
 
 # ----- MAIN -----
-
-try:
-    app = App()
-except KeyboardInterrupt:
-        GPIO.cleanup()
+app = App()
         
