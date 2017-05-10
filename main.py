@@ -125,14 +125,14 @@ class Challenge(Cipher):
         }
 
         self.constellations = {
-                               'Scorpius': ['Obscure Hint','Word Length','More Specific Hint','English Name'],
-                               'Draco': ['','','',''],
-                               'Hydra': ['','','',''],
-                               'Pisces': ['','','',''],
-                               'Aries': ['','','',''],
-                               'Crater': ['','','',''],
-                               'Taurus': ['','','',''],
-                               'Lyra': ['','','','']
+                               'Scorpius': ['Location: southwest','8 letters, with 1 repeating','The name Malfoy chose for his kid','Scorpion'],
+                               'Draco': ['Fiery personality.','5 letters, no repeats','Scales, not feathers','Dragon'],
+                               'Hydra': ['Lives in the sea','5 letters, no repeat','Can’t just cut it off. Lose one, gain two more.','Hail! Water Snake'],
+                               'Pisces': ['Water Dwellers','6 letters, with 1 repeating','Life goes swimmingly for them','Fish'],
+                               'Aries': ['One to pick a fight','5 letters, no repeat','Warmonger of the gods','Ram'],
+                               'Crater': ['It’s the pits for this one','6 letters, with 1 repeating','The impact of a meteorite can make one','Cup'],
+                               'Taurus': ['Spaniards have a long history with this one','6 letters, with 1 repeating','Good luck grabbing it by the horns','Bull'],
+                               'Lyra': ['Don’t get caught in the strings','4 letters, no repeats','Classic music choice of the Greeks. It’s better to strum','Lyre']
                                }
         # randomly choosey a constellation.  This will be the secret code for the game
         self.chosen_constellation = self.constellations.keys()[randint(0,len(self.constellations) - 1)]
