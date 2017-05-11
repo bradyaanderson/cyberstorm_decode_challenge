@@ -181,7 +181,7 @@ class Challenge(Cipher):
                                                 'Lyre'
                                             ]
                                }
-                               
+
         # randomly choosey a constellation.  This will be the secret code for the game
         self.chosen_constellation = self.constellations.keys()[randint(0,len(self.constellations) - 1)]
 
